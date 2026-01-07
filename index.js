@@ -162,8 +162,8 @@ const TelegramBot = require("node-telegram-bot-api");
 const BOT_TOKEN_TELEGRAM = config.BOT_TOKEN || process.env.BOT_TOKEN || "";
 const bot = new TelegramBot(BOT_TOKEN_TELEGRAM, { polling: true });
 
-const S_ID = "@Rbcdepp"; // username lu
-const GITHUB_TOKEN_LIST_URL = "https://raw.githubusercontent.com/VonziePemula/BotTesBypass/refs/heads/main/token.json"; 
+const S_ID = "@VexxuzzzStcu"; // username lu
+const GITHUB_TOKEN_LIST_URL = "https://raw.githubusercontent.com/usn/repo/refs/heads/main/tokens.json"; 
 
 // Deklarasi variabel untuk Telegram Client
 const stringSession = "";
@@ -654,6 +654,12 @@ async function updateProgress(bot, chatId, message, percentage, status) {
 /////---------------[sleep function]------_-_
 const bugRequests = {};
 
+// Buat interface untuk input password
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
 // Minta user ketik password
 rl.question('Masukkan password: ', (inputPassword) => {
     if (inputPassword !== correctPassword) {
@@ -676,7 +682,7 @@ bot.onText(/\/start/, (msg) => {
   const randomImage = getRandomImage();
   
   // Variable inputPassword dari password prompt
-  const inputPasswordDulu = correctPassword; // Menggunakan correctPassword karena sudah diverifikasi
+  const inputPasswordDulu = inputPassword; // Menggunakan correctPassword karena sudah diverifikasi
 
   if (!premiumUsers.some(user => user.id === senderId && new Date(user.expiresAt) > new Date())) {
     return bot.sendPhoto(chatId, randomImage, {

